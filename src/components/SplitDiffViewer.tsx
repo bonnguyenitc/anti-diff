@@ -11,6 +11,7 @@ interface SplitDiffViewerProps {
   ignoreWhitespace: boolean;
   compareLevel: 'char' | 'word' | 'line';
   fontSize?: number;
+  height?: string;
 }
 
 export default function SplitDiffViewer({
@@ -19,7 +20,8 @@ export default function SplitDiffViewer({
   ignoreCase,
   ignoreWhitespace,
   compareLevel,
-  fontSize
+  fontSize,
+  height = '700px'
 }: SplitDiffViewerProps) {
   const leftPaneRef = useRef<HTMLDivElement>(null);
   const rightPaneRef = useRef<HTMLDivElement>(null);
@@ -110,7 +112,7 @@ export default function SplitDiffViewer({
     <div className="card animate-fade-in" style={{
       display: 'flex',
       flexDirection: 'column',
-      height: '700px',
+      height: height,
       overflow: 'hidden',
     }}>
       {/* Pane headers */}

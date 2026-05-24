@@ -189,7 +189,7 @@ export default function TextEditorPanel({
           style={{
             width: '100%',
             height: '100%',
-            minHeight: '500px',
+            minHeight: '200px',
             border: 'none',
             padding: 0,
             resize: 'none',

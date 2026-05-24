@@ -184,27 +184,41 @@ export default function Home() {
         {/* Main interactive panel */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {viewMode === 'edit' && (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '20px',
-              height: '700px',
-            }}>
-              <TextEditorPanel
-                title="Văn bản gốc (Nguồn A)"
-                placeholder="Nhập hoặc dán văn bản gốc vào đây..."
-                value={textA}
-                onChange={setTextA}
-                panelId="panel-a"
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {/* Editors Grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '20px',
+                height: '380px',
+              }}>
+                <TextEditorPanel
+                  title="Văn bản gốc (Nguồn A)"
+                  placeholder="Nhập hoặc dán văn bản gốc vào đây..."
+                  value={textA}
+                  onChange={setTextA}
+                  panelId="panel-a"
+                  fontSize={fontSize}
+                />
+                <TextEditorPanel
+                  title="Văn bản đã sửa (Nguồn B)"
+                  placeholder="Nhập hoặc dán văn bản đã sửa vào đây để so sánh..."
+                  value={textB}
+                  onChange={setTextB}
+                  panelId="panel-b"
+                  fontSize={fontSize}
+                />
+              </div>
+
+              {/* Real-time Diff Preview */}
+              <SplitDiffViewer
+                textA={textA}
+                textB={textB}
+                ignoreCase={ignoreCase}
+                ignoreWhitespace={ignoreWhitespace}
+                compareLevel={diffLevel}
                 fontSize={fontSize}
-              />
-              <TextEditorPanel
-                title="Văn bản đã sửa (Nguồn B)"
-                placeholder="Nhập hoặc dán văn bản đã sửa vào đây để so sánh..."
-                value={textB}
-                onChange={setTextB}
-                panelId="panel-b"
-                fontSize={fontSize}
+                height="450px"
               />
             </div>
           )}

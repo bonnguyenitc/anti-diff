@@ -79,7 +79,7 @@ export default function DiffControls({
         </span>
         <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-tertiary)', padding: '3px', borderRadius: '8px' }}>
           {[
-            { id: 'edit', label: 'Nhập liệu' },
+            { id: 'edit', label: 'Bàn làm việc (Live)' },
             { id: 'split', label: 'So sánh song song' },
             { id: 'unified', label: 'So sánh kết hợp' }
           ].map((mode) => (
