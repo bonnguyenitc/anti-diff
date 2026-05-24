@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import DiffControls from '../components/DiffControls';
-import DiffStats from '../components/DiffStats';
 import TextEditorPanel from '../components/TextEditorPanel';
 import SplitDiffViewer from '../components/SplitDiffViewer';
 import UnifiedDiffViewer from '../components/UnifiedDiffViewer';
@@ -73,71 +72,7 @@ export default function Home() {
   const [ignoreWhitespace, setIgnoreWhitespace] = useState(false);
   const [fontSize, setFontSize] = useState<number>(14);
 
-  // Stats State
-  const [similarity, setSimilarity] = useState(100);
-  const [additionsCount, setAdditionsCount] = useState(0);
-  const [deletionsCount, setDeletionsCount] = useState(0);
-  const [statsA, setStatsA] = useState({ chars: 0, words: 0, lines: 0 });
-  const [statsB, setStatsB] = useState({ chars: 0, words: 0, lines: 0 });
 
-  // Recalculate stats when text or configurations change
-  useEffect(() => {
-    // 1. Text A Stats
-    const charsA = textA.length;
-    const wordsA = textA.trim() === '' ? 0 : textA.trim().split(/\s+/).length;
-    const linesA = textA === '' ? 0 : textA.split('\n').length;
-    setStatsA({ chars: charsA, words: wordsA, lines: linesA });
-
-    // 2. Text B Stats
-    const charsB = textB.length;
-    const wordsB = textB.trim() === '' ? 0 : textB.trim().split(/\s+/).length;
-    const linesB = textB === '' ? 0 : textB.split('\n').length;
-    setStatsB({ chars: charsB, words: wordsB, lines: linesB });
-
-    // 3. Diff and Similarity calculations
-    let addCount = 0;
-    let delCount = 0;
-    let matchChars = 0;
-
-    const opt: any = { ignoreCase };
-
-    if (diffLevel === 'char') {
-      const parts = diff.diffChars(textA, textB, opt) as unknown as any[];
-      parts?.forEach((p) => {
-        if (p.added) addCount += p.value.length;
-        else if (p.removed) delCount += p.value.length;
-        else matchChars += p.value.length;
-      });
-    } else if (diffLevel === 'word') {
-      const parts = diff.diffWords(textA, textB, opt) as unknown as any[];
-      parts?.forEach((p) => {
-        const count = p.value.trim().split(/\s+/).filter(Boolean).length;
-        if (p.added) addCount += count;
-        else if (p.removed) delCount += count;
-        else matchChars += p.value.length; // still base similarity on characters for accuracy
-      });
-    } else { // line level
-      const parts = diff.diffLines(textA, textB, opt) as unknown as any[];
-      parts?.forEach((p) => {
-        let lines = p.value.split('\n');
-        if (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
-        const count = lines.length;
-
-        if (p.added) addCount += count;
-        else if (p.removed) delCount += count;
-      });
-    }
-
-    // Similarity is always best calculated using Character LCS for exact percentage
-    const charParts = diff.diffChars(textA, textB, opt) as unknown as any[];
-    const commonChars = charParts ? charParts.reduce((sum, p) => (!p.added && !p.removed) ? sum + p.value.length : sum, 0) : 0;
-    const maxChars = Math.max(textA.length, textB.length);
-    const simScore = maxChars > 0 ? (commonChars / maxChars) * 100 : 100;
-
-    setSimilarity(simScore);
-    setAdditionsCount(addCount);
-    setDeletionsCount(delCount);
-  }, [textA, textB, diffLevel, ignoreCase, ignoreWhitespace]);
 
   const handleLoadSample = (type: 'code' | 'text' | 'simple') => {
     setTextA(SAMPLES[type].a);
@@ -157,14 +92,7 @@ export default function Home() {
         display: 'flex',
         flexDirection: 'column',
       }}>
-        {/* Statistics Dashboard */}
-        <DiffStats
-          similarity={similarity}
-          additionsCount={additionsCount}
-          deletionsCount={deletionsCount}
-          statsA={statsA}
-          statsB={statsB}
-        />
+
 
         {/* Toolbar controls */}
         <DiffControls
@@ -231,6 +159,7 @@ export default function Home() {
               ignoreWhitespace={ignoreWhitespace}
               compareLevel={diffLevel}
               fontSize={fontSize}
+              height="calc(100vh - 190px)"
             />
           )}
 
@@ -242,21 +171,13 @@ export default function Home() {
               ignoreWhitespace={ignoreWhitespace}
               compareLevel={diffLevel}
               fontSize={fontSize}
+              height="calc(100vh - 190px)"
             />
           )}
         </div>
       </main>
 
-      <footer style={{
-        padding: '24px',
-        textAlign: 'center',
-        fontSize: '0.8rem',
-        color: 'var(--text-muted)',
-        borderTop: '1px solid var(--border-color)',
-        marginTop: '40px'
-      }}>
-        © {new Date().getFullYear()} Antigravity Diff. Công cụ so sánh văn bản thời gian thực, trực quan và hiện đại.
-      </footer>
+
     </div>
   );
 }

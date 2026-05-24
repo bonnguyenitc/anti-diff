@@ -10,6 +10,7 @@ interface UnifiedDiffViewerProps {
   ignoreWhitespace: boolean;
   compareLevel: 'char' | 'word' | 'line';
   fontSize?: number;
+  height?: string;
 }
 
 export default function UnifiedDiffViewer({
@@ -18,7 +19,8 @@ export default function UnifiedDiffViewer({
   ignoreCase,
   ignoreWhitespace,
   compareLevel,
-  fontSize
+  fontSize,
+  height = '700px'
 }: UnifiedDiffViewerProps) {
   // Get line diffs
   const diffs = diff.diffLines(textA, textB, {
@@ -73,7 +75,7 @@ export default function UnifiedDiffViewer({
     <div className="card animate-fade-in" style={{
       display: 'flex',
       flexDirection: 'column',
-      height: '700px',
+      height: height,
       overflow: 'hidden',
     }}>
       {/* Header */}

@@ -283,3 +283,10 @@ body {
 [data-theme="light"] .glass-nav {
   background-color: hsla(210, 20%, 98%, 0.8);
 }
+
+/* Toolbar Responsive Rules */
+@media (max-width: 900px) {
+  .toolbar-text-label {
+    display: none;
+  }
+}

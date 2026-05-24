@@ -19,12 +19,22 @@ export function computeAlignedDiff(
   ignoreWhitespace: boolean,
   compareLevel: 'char' | 'word' | 'line'
 ): AlignedRow[] {
-  // Get line-level diff using jsdiff
-  // Note: jsdiff does not have a direct ignoreWhitespace option for diffLines,
-  // but it does have ignoreWhitespace parameter for diffWords and diffChars.
-  // We can pass options to diffLines:
+  // Get line-level diff using jsdiff with a custom comparator to support ignoreWhitespace and ignoreCase properly.
   const diffs = diff.diffLines(textA, textB, {
     ignoreCase,
+    comparator: (left: string, right: string) => {
+      let l = left;
+      let r = right;
+      if (ignoreCase) {
+        l = l.toLowerCase();
+        r = r.toLowerCase();
+      }
+      if (ignoreWhitespace) {
+        l = l.replace(/\s+/g, ' ').trim();
+        r = r.replace(/\s+/g, ' ').trim();
+      }
+      return l === r;
+    }
   } as any) as unknown as any[];
 
   if (!diffs) return [];
@@ -52,19 +62,16 @@ export function computeAlignedDiff(
 
       // If we have both a removed line and an added line, compute sub-line highlights
       if (remText !== undefined && addText !== undefined && compareLevel !== 'line') {
-        const textToCompareA = ignoreCase ? remText.toLowerCase() : remText;
-        const textToCompareB = ignoreCase ? addText.toLowerCase() : addText;
-
         if (compareLevel === 'word') {
           // Word diff
-          const subDiff = diff.diffWords(remText, addText, { ignoreCase } as any) as unknown as any[];
+          const subDiff = diff.diffWords(remText, addText, { ignoreCase, ignoreWhitespace } as any) as unknown as any[];
           if (subDiff) {
             left.words = subDiff.filter(p => !p.added);
             right.words = subDiff.filter(p => !p.removed);
           }
         } else if (compareLevel === 'char') {
           // Character diff
-          const subDiff = diff.diffChars(remText, addText, { ignoreCase } as any) as unknown as any[];
+          const subDiff = diff.diffChars(remText, addText, { ignoreCase, ignoreWhitespace } as any) as unknown as any[];
           if (subDiff) {
             left.words = subDiff.filter(p => !p.added);
             right.words = subDiff.filter(p => !p.removed);
