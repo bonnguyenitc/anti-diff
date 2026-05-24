@@ -15,6 +15,8 @@ interface DiffControlsProps {
   ignoreWhitespace: boolean;
   setIgnoreWhitespace: (val: boolean) => void;
   onLoadSample: (type: 'code' | 'text' | 'simple') => void;
+  fontSize: number;
+  setFontSize: (size: number) => void;
 }
 
 export default function DiffControls({
@@ -26,7 +28,9 @@ export default function DiffControls({
   setIgnoreCase,
   ignoreWhitespace,
   setIgnoreWhitespace,
-  onLoadSample
+  onLoadSample,
+  fontSize,
+  setFontSize
 }: DiffControlsProps) {
   return (
     <div className="card animate-fade-in" style={{
@@ -136,6 +140,36 @@ export default function DiffControls({
           />
           Bỏ qua khoảng trắng
         </label>
+      </div>
+
+      {/* Font Size Selector */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+          Cỡ chữ
+        </span>
+        <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-tertiary)', padding: '3px', borderRadius: '8px' }}>
+          {([12, 14, 16, 18] as number[]).map((size) => (
+            <button
+              key={size}
+              onClick={() => setFontSize(size)}
+              style={{
+                padding: '6px 10px',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                border: 'none',
+                borderRadius: '6px',
+                backgroundColor: fontSize === size ? 'var(--bg-secondary)' : 'transparent',
+                color: fontSize === size ? 'var(--text-primary)' : 'var(--text-secondary)',
+                boxShadow: fontSize === size ? 'var(--shadow-sm)' : 'none',
+                cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
+              }}
+              id={`font-size-${size}`}
+            >
+              {size}px
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Load Samples */}

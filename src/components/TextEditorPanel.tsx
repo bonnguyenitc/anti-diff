@@ -8,6 +8,7 @@ interface TextEditorPanelProps {
   value: string;
   onChange: (val: string) => void;
   panelId: 'panel-a' | 'panel-b';
+  fontSize?: number;
 }
 
 export default function TextEditorPanel({
@@ -15,7 +16,8 @@ export default function TextEditorPanel({
   placeholder,
   value,
   onChange,
-  panelId
+  panelId,
+  fontSize
 }: TextEditorPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -194,6 +196,7 @@ export default function TextEditorPanel({
             backgroundColor: 'transparent',
             outline: 'none',
             color: 'var(--text-primary)',
+            fontSize: fontSize ? `${fontSize}px` : undefined,
           }}
           id={`${panelId}-textarea`}
         />

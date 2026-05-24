@@ -10,6 +10,7 @@ interface SplitDiffViewerProps {
   ignoreCase: boolean;
   ignoreWhitespace: boolean;
   compareLevel: 'char' | 'word' | 'line';
+  fontSize?: number;
 }
 
 export default function SplitDiffViewer({
@@ -17,7 +18,8 @@ export default function SplitDiffViewer({
   textB,
   ignoreCase,
   ignoreWhitespace,
-  compareLevel
+  compareLevel,
+  fontSize
 }: SplitDiffViewerProps) {
   const leftPaneRef = useRef<HTMLDivElement>(null);
   const rightPaneRef = useRef<HTMLDivElement>(null);
@@ -143,6 +145,7 @@ export default function SplitDiffViewer({
             height: '100%',
             borderRight: '1px solid var(--border-color)',
             backgroundColor: 'var(--bg-secondary)',
+            fontSize: fontSize ? `${fontSize}px` : undefined,
           }}
         >
           {rows.map((row, idx) => {
@@ -201,6 +204,7 @@ export default function SplitDiffViewer({
             overflow: 'auto',
             height: '100%',
             backgroundColor: 'var(--bg-secondary)',
+            fontSize: fontSize ? `${fontSize}px` : undefined,
           }}
         >
           {rows.map((row, idx) => {

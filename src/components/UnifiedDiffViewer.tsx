@@ -9,6 +9,7 @@ interface UnifiedDiffViewerProps {
   ignoreCase: boolean;
   ignoreWhitespace: boolean;
   compareLevel: 'char' | 'word' | 'line';
+  fontSize?: number;
 }
 
 export default function UnifiedDiffViewer({
@@ -16,7 +17,8 @@ export default function UnifiedDiffViewer({
   textB,
   ignoreCase,
   ignoreWhitespace,
-  compareLevel
+  compareLevel,
+  fontSize
 }: UnifiedDiffViewerProps) {
   // Get line diffs
   const diffs = diff.diffLines(textA, textB, {
@@ -98,7 +100,8 @@ export default function UnifiedDiffViewer({
           overflow: 'auto',
           flex: 1,
           backgroundColor: 'var(--bg-secondary)',
-          padding: '4px 0'
+          padding: '4px 0',
+          fontSize: fontSize ? `${fontSize}px` : undefined,
         }}
       >
         {linesToRender.map((line, idx) => {

@@ -71,6 +71,7 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('edit');
   const [ignoreCase, setIgnoreCase] = useState(false);
   const [ignoreWhitespace, setIgnoreWhitespace] = useState(false);
+  const [fontSize, setFontSize] = useState<number>(14);
 
   // Stats State
   const [similarity, setSimilarity] = useState(100);
@@ -176,6 +177,8 @@ export default function Home() {
           ignoreWhitespace={ignoreWhitespace}
           setIgnoreWhitespace={setIgnoreWhitespace}
           onLoadSample={handleLoadSample}
+          fontSize={fontSize}
+          setFontSize={setFontSize}
         />
 
         {/* Main interactive panel */}
@@ -193,6 +196,7 @@ export default function Home() {
                 value={textA}
                 onChange={setTextA}
                 panelId="panel-a"
+                fontSize={fontSize}
               />
               <TextEditorPanel
                 title="Văn bản đã sửa (Nguồn B)"
@@ -200,6 +204,7 @@ export default function Home() {
                 value={textB}
                 onChange={setTextB}
                 panelId="panel-b"
+                fontSize={fontSize}
               />
             </div>
           )}
@@ -211,6 +216,7 @@ export default function Home() {
               ignoreCase={ignoreCase}
               ignoreWhitespace={ignoreWhitespace}
               compareLevel={diffLevel}
+              fontSize={fontSize}
             />
           )}
 
@@ -221,6 +227,7 @@ export default function Home() {
               ignoreCase={ignoreCase}
               ignoreWhitespace={ignoreWhitespace}
               compareLevel={diffLevel}
+              fontSize={fontSize}
             />
           )}
         </div>
